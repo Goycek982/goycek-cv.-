@@ -1,0 +1,121 @@
+// CV məlumatları sabit dəyişənlərdə saxlanılır
+const cvMelumatlari = {
+  adSoyad: "Goycek Eliyeva",
+  peshe: "Informasiya Tehlukesizliyi",
+  elaqe: {
+    email: "goycek5@gmail.com",
+    telefon: "+994 70 854 82 50"
+  },
+  bacariqlar: ["HTML", "CSS", "JavaScript", "Git", "Responsive Dizayn"],
+  tecrube: [
+    {
+      sirket: "ABC Ltd",
+      vezife: "Web Developer",
+      il: "2023-2024"
+    },
+    {
+      sirket: "XYZ Tech",
+      vezife: "Junior Developer",
+      il: "2022-2023"
+    }
+  ],
+  tehsil: [
+    {
+      universitet: "Azerbaycan Texniki Universiteti",
+      ixtisas: "Informasiya Tehlukesizliyi",
+      il: "2024-2028"
+    }
+  ]
+};
+
+// CV məlumatlarını HTML-ə əlavə edən funksiya
+function cvGoster(melumatlar) {
+  const konteyner = document.getElementById("cv-konteyneri");
+  konteyner.innerHTML = `
+    <h1>${melumatlar.adSoyad}</h1>
+    <h2>${melumatlar.peshe}</h2>
+    <p><strong>E-mail:</strong> ${melumatlar.elaqe.email}</p>
+    <p><strong>Telefon:</strong> ${melumatlar.elaqe.telefon}</p>
+
+    <h3>Bacarıqlar:</h3>
+    <ul>
+      ${melumatlar.bacariqlar.map(item => `<li>${item}</li>`).join('')}
+    </ul>
+
+    <h3>Təcrübə:</h3>
+    <ul>
+      ${melumatlar.tecrube.map(item => `
+        <li>
+          <strong>${item.vezife}</strong> - ${item.sirket} (${item.il})
+        </li>
+      `).join('')}
+    </ul>
+
+    <h3>Təhsil:</h3>
+    <ul>
+      ${melumatlar.tehsil.map(item => `
+        <li>
+          <strong>${item.ixtisas}</strong> - ${item.universitet} (${item.il})
+        </li>
+      `).join('')}
+    </ul>
+  `;
+}
+
+// Gecə rejimi funksiyası
+function geceRejimiDeyis() {
+  document.body.classList.toggle("gece-rejimi");
+}
+
+// Gecə rejimi düyməsini əlavə et
+const geceDugmesi = document.createElement("button");
+geceDugmesi.textContent = "🌙 Gecə Rejimi";
+geceDugmesi.addEventListener("click", geceRejimiDeyis);
+document.body.insertBefore(geceDugmesi, document.getElementById("cv-konteyneri"));
+
+// Dil dəyişdirmə (EN / AZ) – sadə versiya
+const ceviriler = {
+  az: {
+    adSoyad: "Goycek Eliyeva",
+    peshe: "Kibertehlukesizlik uzre mutexessis",
+    etiketler: {
+      email: "E-mail",
+      telefon: "Telefon",
+      bacariqlar: "Bacarıqlar",
+      tecrube: "Təcrübə",
+      tehsil: "Təhsil"
+    }
+  },
+  en: {
+    adSoyad: "Goycek Eliyeva",
+    peshe: "Kibertehlukesizlik uzre mutexessis",
+    etiketler: {
+      email: "Email",
+      telefon: "Phone",
+      bacariqlar: "Skills",
+      tecrube: "Experience",
+      tehsil: "Education"
+    }
+  }
+};
+
+// Dil dəyişmə funksiyası
+function diliDeyis(dil) {
+  const ceviri = ceviriler[dil];
+  cvMelumatlari.adSoyad = ceviri.adSoyad;
+  cvMelumatlari.peshe = ceviri.peshe;
+
+  // Yenidən göstər
+  cvGoster(cvMelumatlari);
+}
+
+// Dil dəyişdirmə düymələri əlavə et
+const dilDugmeleri = document.createElement("div");
+dilDugmeleri.innerHTML = `
+  <button onclick="diliDeyis('az')">AZ</button>
+  <button onclick="diliDeyis('en')">EN</button>
+`;
+document.body.insertBefore(dilDugmeleri, document.getElementById("cv-konteyneri"));
+
+// Səhifə yükləndikdə göstər
+document.addEventListener("DOMContentLoaded", () => cvGoster(cvMelumatlari));
